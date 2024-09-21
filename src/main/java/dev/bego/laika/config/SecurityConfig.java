@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import dev.bego.laika.facades.encryptations.Base64Encoder;
+import dev.bego.laika.users.user_details.JpaUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
