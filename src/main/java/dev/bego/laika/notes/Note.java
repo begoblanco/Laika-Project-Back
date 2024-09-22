@@ -29,7 +29,6 @@ public class Note {
 
     private String title;
     private String content;
-    private Long user_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
