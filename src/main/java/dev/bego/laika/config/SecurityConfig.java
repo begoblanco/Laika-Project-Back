@@ -2,7 +2,6 @@ package dev.bego.laika.config;
 
 import java.util.Arrays;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,11 +43,12 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .logout(out -> out
                         .logoutUrl(endpoint + "/logout")
-                        .deleteCookies("Laiker"))
+                        .deleteCookies("Laiker")
+                        .logoutSuccessUrl("/"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
-                        
+                        .requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
+
                         .anyRequest().authenticated())
                 .userDetailsService(jpaUserDetailsService)
                 .httpBasic(basic -> basic.authenticationEntryPoint(myBasicAuthenticationEntryPoint))
