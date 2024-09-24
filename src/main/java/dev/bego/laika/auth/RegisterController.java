@@ -25,7 +25,7 @@ public class RegisterController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> register(@Valid @RequestBody RegisterDto newUser) {
+    public ResponseEntity<Map<String, String>> register(@Valid @RequestBody RegisterDto newUser) { //por header
         if(!service.findByUsername(newUser.getUsername()).isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User already exists"));
         }
