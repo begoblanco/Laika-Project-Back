@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dev.bego.laika.notes.notes_exceptions.NoteNotFoundException;
 import dev.bego.laika.users.*;
+import dev.bego.laika.users.user_exceptions.UserNotFoundException;
 
 @Service
 public class NoteService {
