@@ -18,11 +18,11 @@ import dev.bego.laika.users.UserRepository;
 
 @RestController
 @RequestMapping(path = "${api-endpoint}/login")
-public class LoginController {
+public class AuthenticationController {
     
     private final UserRepository userRepository;
 
-    public LoginController(UserRepository userRepository) {
+    public AuthenticationController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
