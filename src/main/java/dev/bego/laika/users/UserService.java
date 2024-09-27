@@ -12,7 +12,7 @@ import dev.bego.laika.roles.RoleService;
 
 @Service
 public class UserService {
-    
+
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final IEncryptFacade encoderFacade;

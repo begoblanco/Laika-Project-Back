@@ -15,7 +15,7 @@ import dev.bego.laika.users.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(path = "${api-endpoint}/register")
+@RequestMapping(path = "${api-endpoint}/auth")
 public class RegisterController {
 
      private final UserService service;
@@ -24,7 +24,7 @@ public class RegisterController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@Valid @RequestBody RegisterDto newUser) { //por header
         if(!service.findByUsername(newUser.getUsername()).isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User already exists"));

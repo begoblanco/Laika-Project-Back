@@ -1,49 +1,34 @@
 package dev.bego.laika.auth;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.bego.laika.users.User;
-import dev.bego.laika.users.UserRepository;
 
+@RequestMapping("${api-endpoint}/auth")
 @RestController
-@RequestMapping(path = "${api-endpoint}/login")
 public class AuthenticationController {
-    
-    private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    public AuthenticationController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final AuthenticationService authenticationService;
+
+    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
+        this.jwtService = jwtService;
+        this.authenticationService = authenticationService;
     }
 
-    @GetMapping
-    public ResponseEntity<Map<String, String>> login() {
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginDto) {
+        User authenticatedUser = authenticationService.authenticate(loginDto);
 
-        SecurityContext contextHolder = SecurityContextHolder.getContext();
-        Authentication auth = contextHolder.getAuthentication();
+        String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        String username = auth.getName();
+        LoginResponse loginResponse = new LoginResponse(authenticatedUser.getId(), jwtToken,
+                jwtService.getExpirationTime());
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-
-        Map<String, String> json = new HashMap<>();
-        json.put("message", "Logged");
-        json.put("id", String.valueOf(user.getId()));
-        json.put("username", auth.getName());
-        json.put("roles", auth.getAuthorities().iterator().next().getAuthority());
-
-        return ResponseEntity.status(HttpStatus.OK).body(json);
+        return ResponseEntity.ok(loginResponse);
     }
-
 }
