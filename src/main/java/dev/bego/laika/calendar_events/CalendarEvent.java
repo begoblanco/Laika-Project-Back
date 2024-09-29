@@ -16,6 +16,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -29,13 +30,8 @@ public class CalendarEvent {
      @Column(nullable = false)
     private String title;
 
-    private String description;
-
-    @Column(nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
-
-    @Column(nullable = false)
-    private LocalDateTime endDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
