@@ -7,25 +7,36 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Optional;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.util.Value;
+
+import dev.bego.laika.users.User;
+import dev.bego.laika.users.UserService;
 
 @Service
 public class ChatService {
 
-    @Value("${chat-api-endpoint}")
-    private String chatApiEndpoint;
+    @Autowired
+    private UserService userService;
 
     public ResponseDto sendMessage(MessageDto messageDto, Long userId) {
         try {
             
+            Optional<User> user = userService.findById(userId);
+            InformedMessageDto informedMessageDto = new InformedMessageDto(user.get().getId(), user.get().getUsername(),
+                    messageDto.getMessage(),
+                    new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            
             ObjectMapper objectMapper = new ObjectMapper();
 
-            String request_json = objectMapper.writeValueAsString(messageDto);
+            String request_json = objectMapper.writeValueAsString(informedMessageDto);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI("http://localhost:15000" + "/chat"))
@@ -36,7 +47,7 @@ public class ChatService {
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 String response_json = response.body();
-              
+                
                 ResponseDto responseDto = objectMapper.readValue(response_json, ResponseDto.class);
                 return responseDto;
             } else {

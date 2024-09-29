@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InformedMessageDto {
     private Long user_id;
+    private String user_name;
     private String message;
     private String current_date;
 }

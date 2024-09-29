@@ -1,12 +1,12 @@
 package dev.bego.laika.users;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import dev.bego.laika.auth.RegisterDto;
 import dev.bego.laika.facades.EncoderFacade;
-import dev.bego.laika.implementations.IEncryptFacade;
 import dev.bego.laika.roles.Role;
 import dev.bego.laika.roles.RoleService;
 
@@ -15,24 +15,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleService roleService;
-    private final IEncryptFacade encoderFacade;
 
     public UserService(UserRepository userRepository, RoleService roleService, EncoderFacade encoderFacade) {
         this.userRepository = userRepository;
         this.roleService = roleService;
-        this.encoderFacade = encoderFacade;
     }
 
-    public User save(RegisterDto newRegisterDto) {
-        String passwordDecoded = encoderFacade.decode("base64", newRegisterDto.getPassword());
-        String passwordEncoded = encoderFacade.encode("bcrypt", passwordDecoded);
-
-        User user = new User(newRegisterDto.getUsername(), passwordEncoded);
-        user.setRoles(assignDefaultRole());
-
-        User savedUser = userRepository.save(user);
-
-        return savedUser;
+    public Optional<User> findById(Long userId) {
+        return userRepository.findById(userId);
     }
 
     public Optional<User> findByUsername(String username) {
