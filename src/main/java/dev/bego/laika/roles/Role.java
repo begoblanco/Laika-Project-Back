@@ -35,4 +35,9 @@ public class Role {
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     Set<User> users;
+
+    public Role(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
