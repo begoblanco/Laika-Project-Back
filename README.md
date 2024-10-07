@@ -48,5 +48,8 @@ mvnw.cmd spring-boot:run
 | API_ENDPOINT/auth/login    | POST   | Login user with username and password. Returns JWT token. |   |   |   |   |   |   |   |   |
 | API_ENDPOINT/auth/register | POST   | Register a user with username and password.               |   |   |   |   |   |   |   |   |
 
+## Diagram
 
+
+![laika diagram](https://github.com/user-attachments/assets/ce5dca55-c599-48da-989a-148803c70b00)
 
