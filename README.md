@@ -53,6 +53,12 @@ mvnw.cmd spring-boot:run
 
 ![laika diagram](https://github.com/user-attachments/assets/ce5dca55-c599-48da-989a-148803c70b00)
 
+## Links
+
+[Back-end Python Laika](https://github.com/begoblanco/Laika-Project-AI)
+
+[Front-end Laika](https://github.com/begoblanco/Laika-Project-Front)
+
 ## Credits
 This is a non-profitable project!
 
